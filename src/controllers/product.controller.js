@@ -50,4 +50,24 @@ productController.get("/", async (_req, res) => {
   }
 });
 
+// == Update ==
+productController.put("/:productId", async (req, res) => {
+  const productId = parseInt(req.params.productId);
+  const { productName, price } = req.body;
+  try {
+    await productModel.update(productId, productName, parseInt(price));
+    res.json({
+      message: `Product ${productId} updated.`,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500);
+    res.json({
+      message: `Something went wrong when updating product ${productId}.`,
+    });
+  }
+});
+
+// == Delete ==
+
 export default productController;

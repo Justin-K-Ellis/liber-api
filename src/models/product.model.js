@@ -12,12 +12,33 @@ class Product {
   }
 
   // == Read ==
+  // == Get all ==
   async getAll() {
     const { rows } = await pool.query(
       "SELECT product_id, product_name, price FROM product"
     );
     return rows;
   }
+
+  // == Search by partial match to product name ==
+  // TODO
+
+  // == Seach by price range ==
+  // TODO
+
+  // == Update ==
+  async update(productId, productName, price) {
+    await pool.query(
+      `UPDATE product
+            SET product_name = $1,
+                price = $2
+            WHERE product_id = $3`,
+      [productName, price, productId]
+    );
+  }
+
+  // == Delete ==
+  // TODO
 }
 
 export default Product;
