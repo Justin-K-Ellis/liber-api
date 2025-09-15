@@ -5,10 +5,13 @@ class Product {
 
   // == Create ==
   async add(productId, productName, price) {
-    await pool.query(
-      "INSERT INTO product (product_id, product_name, price) VALUES ($1, $2, $3)",
+    const { rows } = await pool.query(
+      `INSERT INTO product (product_id, product_name, price) 
+      VALUES ($1, $2, $3)
+      RETURNING product_id, product_name, price`,
       [productId, productName, price]
     );
+    return rows;
   }
 
   // == Read ==

@@ -23,11 +23,13 @@ productController.post("/", async (req, res) => {
   try {
     const productIdNum = parseInt(productId);
     const priceNum = parseInt(price);
-    await productModel.add(productIdNum, productName, priceNum);
+    const newProduct = await productModel.add(
+      productIdNum,
+      productName,
+      priceNum
+    );
     res.status(201);
-    res.json({
-      message: "Product created.",
-    });
+    res.json(newProduct);
   } catch (error) {
     console.error(error);
     res.json({
