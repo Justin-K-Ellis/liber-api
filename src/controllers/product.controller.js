@@ -55,7 +55,17 @@ productController.put("/:productId", async (req, res) => {
   const productId = parseInt(req.params.productId);
   const { productName, price } = req.body;
   try {
-    await productModel.update(productId, productName, parseInt(price));
+    const updatedProduct = await productModel.update(
+      productId,
+      productName,
+      parseInt(price)
+    );
+    if (updatedProduct.length < 1) {
+      res.status(404);
+      res.json({
+        message: `Product ${productId} does not exist.`,
+      });
+    }
     res.json({
       message: `Product ${productId} updated.`,
     });

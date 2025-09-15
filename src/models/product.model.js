@@ -28,13 +28,15 @@ class Product {
 
   // == Update ==
   async update(productId, productName, price) {
-    await pool.query(
+    const { rows } = await pool.query(
       `UPDATE product
             SET product_name = $1,
                 price = $2
-            WHERE product_id = $3`,
+            WHERE product_id = $3
+            RETURNING product_id, product_name, price`,
       [productName, price, productId]
     );
+    return rows;
   }
 
   // == Delete ==
