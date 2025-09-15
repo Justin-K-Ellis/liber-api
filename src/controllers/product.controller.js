@@ -69,5 +69,25 @@ productController.put("/:productId", async (req, res) => {
 });
 
 // == Delete ==
+productController.delete("/:productId", async (req, res) => {
+  const productId = req.params.productId;
+  try {
+    const deletedProduct = await productModel.delete(parseInt(productId));
+    if (deletedProduct.length < 1) {
+      res.status(404);
+      res.json({
+        message: `Product ${productId} does not exist.`,
+      });
+    }
+    res.status(204);
+    res.end();
+  } catch (error) {
+    console.error(error);
+    res.status(500);
+    res.json({
+      message: `Something went wrong when deleting product ${productId}.`,
+    });
+  }
+});
 
 export default productController;

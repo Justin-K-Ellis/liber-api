@@ -38,7 +38,15 @@ class Product {
   }
 
   // == Delete ==
-  // TODO
+  async delete(productId) {
+    const { rows } = await pool.query(
+      `DELETE FROM product
+        WHERE product_id = $1
+        RETURNING *`,
+      [productId]
+    );
+    return rows;
+  }
 }
 
 export default Product;
