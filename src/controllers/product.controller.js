@@ -20,11 +20,9 @@ productController.post("/", async (req, res) => {
   }
 
   try {
-    const productIdNum = parseInt(productId);
-    const priceNum = parseInt(price);
     const newProduct = await productModel.add(
-      productIdNum,
-      productName,
+      parseInt(productIdNum),
+      parseInt(productName),
       priceNum
     );
     res.status(201);
