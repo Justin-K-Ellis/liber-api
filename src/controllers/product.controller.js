@@ -7,7 +7,6 @@ const productModel = new Product();
 // == Create ==
 productController.post("/", async (req, res) => {
   const { productId, productName, price } = req.body;
-  console.log(productId, productName, price);
 
   if (
     productId === undefined ||
@@ -39,6 +38,7 @@ productController.post("/", async (req, res) => {
 });
 
 // == Read ==
+// Get all product
 productController.get("/", async (_req, res) => {
   try {
     const products = await productModel.getAll();
@@ -48,6 +48,22 @@ productController.get("/", async (_req, res) => {
     res.status(500);
     res.json({
       message: "Something went wrong when getting all products.",
+    });
+  }
+});
+
+productController.get("/search", async (req, res) => {
+  const { min, max, productName } = req.query;
+  try {
+    if (min && max) {
+      const products = await productModel.findByPriceRange(min, max);
+      res.json(products);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500);
+    res.json({
+      message: "Something went wrong when searching for product(s).",
     });
   }
 });

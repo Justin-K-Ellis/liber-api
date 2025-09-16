@@ -27,7 +27,15 @@ class Product {
   // TODO
 
   // == Seach by price range ==
-  // TODO
+  async findByPriceRange(min, max) {
+    const { rows } = await pool.query(
+      `SELECT product_id, product_name, price
+        FROM product
+        WHERE price >= $1 AND price <= $2`,
+      [min, max]
+    );
+    return rows;
+  }
 
   // == Update ==
   async update(productId, productName, price) {
