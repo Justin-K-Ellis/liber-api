@@ -52,12 +52,21 @@ productController.get("/", async (_req, res) => {
   }
 });
 
+// Search by price range or partial match on product name
 productController.get("/search", async (req, res) => {
   const { min, max, productName } = req.query;
   try {
     if (min && max) {
       const products = await productModel.findByPriceRange(min, max);
       res.json(products);
+    } else if (productName) {
+      const products = await productModel.findByPartialMatch(productName);
+      res.json(products);
+    } else {
+      res.status(400);
+      res.json({
+        message: "Invalid search query.",
+      });
     }
   } catch (error) {
     console.error(error);

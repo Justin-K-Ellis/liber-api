@@ -24,7 +24,15 @@ class Product {
   }
 
   // == Search by partial match to product name ==
-  // TODO
+  async findByPartialMatch(productName) {
+    const { rows } = await pool.query(
+      `SELECT product_id, product_name, price
+        FROM product
+        WHERE product_name ILIKE $1`,
+      [`%${productName}%`]
+    );
+    return rows;
+  }
 
   // == Seach by price range ==
   async findByPriceRange(min, max) {
