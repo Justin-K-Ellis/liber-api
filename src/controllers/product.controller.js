@@ -79,9 +79,18 @@ productController.get("/search", async (req, res) => {
 productController.put("/:productId", async (req, res) => {
   const productId = parseInt(req.params.productId);
   const { productName, price } = req.body;
+
   try {
+    // Check for valid price input
+    if (!Number.isInteger(parseInt(price))) {
+      res.status(403);
+      return res.json({
+        message: "Invalid price",
+      });
+    }
+
     const updatedProduct = await productModel.update(
-      productId,
+      parseInt(productId),
       productName,
       parseInt(price)
     );
