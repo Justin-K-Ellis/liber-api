@@ -83,9 +83,14 @@ productController.put("/:productId", async (req, res) => {
   try {
     // Check for valid price input
     if (!Number.isInteger(parseInt(price))) {
-      res.status(403);
+      res.status(400);
       return res.json({
-        message: "Invalid price",
+        message: "Invalid price format",
+      });
+    } else if (!productName || !price) {
+      res.status(400);
+      return res.json({
+        message: "Product name or price missing from request.",
       });
     }
 
@@ -100,9 +105,7 @@ productController.put("/:productId", async (req, res) => {
         message: `Product ${productId} does not exist.`,
       });
     }
-    res.json({
-      message: `Product ${productId} updated.`,
-    });
+    res.json(updatedProduct);
   } catch (error) {
     console.error(error);
     res.status(500);
